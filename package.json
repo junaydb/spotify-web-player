@@ -1,0 +1,28 @@
+{
+  "name": "spotify-web-player",
+  "version": "1.0.0",
+  "description": "A Spotify inspired audio web player for WebKit based browsers",
+  "main": "index.html",
+  "scripts": {
+    "start": "open index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/junaydb/spotify-web-player.git"
+  },
+  "author": "Junayd Bhoyroo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/junaydb/spotify-web-player/issues"
+  },
+  "homepage": "https://github.com/junaydb/spotify-web-player#readme",
+  "prettier":
+    {
+      "trailingComma": "es5",
+      "tabWidth": 4,
+      "semi": false,
+      "singleQuote": true,
+      "printWidth": 100
+    }
+}

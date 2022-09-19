@@ -10,18 +10,24 @@
 </head>
 
 <body>
-    <div id="bg" class="horizontal-center">
-        <div id="buttons" class="vertical-center">
-            <div id="rewind"><img src="svg/rewind-button.svg" class="seek" alt="rewind"></div>
-            <div id="play-pause"><img src="svg/play-button.svg" alt="play/pause"></div>
-            <div id="forward"><img src="svg/forward-button.svg" class="seek" alt="forward"></div>
+    <section id="audio-player">
+        <div id="bg" class="horizontal-center">
+            <div id="buttons" class="vertical-center">
+                <div id="rewind"><img src="png/rewind-button.png" class="seek" alt="rewind"></div>
+                <div id="play-pause"><img src="png/play-button.png" alt="play/pause"></div>
+                <div id="forward"><img src="png/forward-button.png" class="seek" alt="forward"></div>
+            </div>
+            <div id="time-bar" class="vertical-center">
+                <div id="current-time">1:32</div>
+                <div id="range-container">
+                    <input id="range" type="range" min="1" max="100" value="50">
+                </div>
+                <div id="total-duration">3:07</div>
+            </div>
         </div>
-        <div id="time-bar" class="vertical-center">
-            <div id="current-time">1:32</div>
-            <div id="progress-bar"></div>
-            <div id="total-duration">3:07</div>
-        </div>
-    </div>
+    </section>
+    <script src="script.js"></script>
+    <noscript>Your browser does not support JavaScript</noscript>
 </body>
 
 </html>
