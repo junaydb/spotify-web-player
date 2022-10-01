@@ -11,21 +11,43 @@
 
 <body>
     <section id="audio-player">
-        <div id="bg" class="horizontal-center">
-            <div id="buttons" class="vertical-center">
-                <div id="rewind"><img src="png/rewind-button.png" class="seek" alt="rewind"></div>
-                <div id="play-pause"><img src="png/play-button.png" alt="play/pause"></div>
-                <div id="forward"><img src="png/forward-button.png" class="seek" alt="forward"></div>
+
+        <audio src="" loop></audio>
+
+        <div id="bg">
+            <div id="track-info">
+                <p id="track-name"></p>
+                <p id="now-playing"></p>
             </div>
-            <div id="time-bar" class="vertical-center">
-                <div id="current-time">1:32</div>
-                <div id="range-container">
-                    <input id="range" type="range" min="1" max="100" value="50">
+            <div id="controls" class="horizontal-center">
+                <div id="buttons" class="vertical-center">
+                    <div id="rewind"><img src="png/rewind-button.png" class="seek" alt="rewind"></div>
+                    <div id="play-pause"><img src="png/play-button.png" alt="play/pause"></div>
+                    <div id="forward"><img src="png/forward-button.png" class="seek" alt="forward"></div>
                 </div>
-                <div id="total-duration">3:07</div>
+
+                <div id="time-bar" class="vertical-center">
+                    <div id="current-time" class="time">0:00</div>
+                    <div id="range-container">
+                        <input id="range" type="range" min="0" max="100" value="0">
+                    </div>
+                    <div id="total-duration" class="time">3:07</div>
+                </div>
             </div>
+            <!-- for keeping controls centered -->
+            <div id="ghost-div"></div>
         </div>
     </section>
+
+    <section id="file-selection">
+        <label for="file-upload" id="custom-file-upload">
+            Upload audio
+        </label>
+        <input id="file-upload" type="file" accept="audio/*" hidden>
+    </section>
+
+    <div id="test"></div>
+
     <script src="script.js"></script>
     <noscript>Your browser does not support JavaScript</noscript>
 </body>

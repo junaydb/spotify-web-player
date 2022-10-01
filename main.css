@@ -1,13 +1,19 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
+:root {
+    --visibility: hidden;
+}
+
 * {
     font-family: 'Roboto', monospace;
     margin: 0px;
+    overflow: hidden;
 }
 
 body {
     margin: 10px 15px 10px 15px;
     animation: fadeIn ease 0.25s;
+    background-color: #050505;
 }
 
 #audio-player {
@@ -16,8 +22,10 @@ body {
 }
 
 #bg {
+    display: flex;
+    justify-content: space-between;
     width: 100%;
-    max-width: 700px;
+    max-width: 1000px;
     background-color: rgb(24, 24, 24);
     border-radius: 5px;
     padding: 20px 0px 20px 0px;
@@ -34,22 +42,51 @@ body {
     justify-content: center;
 }
 
-#buttons {
+#controls {
+    width: 60%;
+}
+
+#track-info {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 30px;
+    width: 20%;
+}
+
+/* for keeping controls centered */
+#ghost-div {
+    width: 20%;
+    padding-right: 30px
+}
+
+#track-name {
+    color: white;
+    font-size: 15px;
+    font-weight: bolder;
+    margin-bottom: 3px;
+}
+
+#now-playing {
+    color: rgb(187, 187, 187);
+    font-size: 11px;
+    font-weight: bolder;
+}
+
+#buttons {
+    width: 90%;
     margin-bottom: 10px;
+    align-items: center;
 }
 
 #play-pause {
-    margin-left: 25px;
-    margin-right: 25px;
+    margin: 0px 22px 0px 22px;
 }
 
 #play-pause > img {
-    width: 53px;
+    display: block;
+    width: 47px;
 }
-
-
 
 #play-pause:hover {
     cursor: pointer;
@@ -60,7 +97,8 @@ body {
 }
 
 .seek {
-    width: 27px;
+    display: block;
+    width: 24px;
     opacity: 90%;
 }
 
@@ -78,25 +116,58 @@ body {
     cursor: pointer;
 }
 
+.time {
+    width: 30px;
+}
+
+#current-time {
+    text-align: right;
+}
+
 #range {
     -webkit-appearance: none;
-    overflow: hidden;
+    overflow: visible;
     background: white;
-    width: 40vw;
+    width: 35vw;
     max-width: 400px;
     height: 4px;
     margin: 0 10px 2px 10px;
-    border-radius: 5px;
+    border-radius: 4px;
     vertical-align: middle;
     cursor: pointer;
 }
 
 #range::-webkit-slider-thumb {
     -webkit-appearance: none;
+    visibility: var(--visibility);
+    display: block;
     width: 12px;
     height: 12px;
     background-color: white;
     border-radius: 20px;
+}
+
+#file-selection {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#custom-file-upload {
+    font-size: 15px;
+    font-weight: bold;
+    display: inline-block;
+    cursor: pointer;
+    padding: 15px 20px 15px 20px;
+    border-radius: 100px;
+    color: white;
+    background-color: rgb(24, 24, 24);
+}
+
+#custom-file-upload:hover {
+    border-color: #1D8954;
+    background-color: #1D8954;
+    animation: bgFade ease 0.1s;
 }
 
 @keyframes fadeIn {
@@ -105,5 +176,14 @@ body {
     }
     100% {
         opacity: 1;
+    }
+}
+
+@keyframes bgFade {
+    0% {
+        background-color: rgb(24, 24, 24);
+    }
+    100% {
+        background-color: #1D8954;
     }
 }
