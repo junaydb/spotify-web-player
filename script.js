@@ -1,4 +1,8 @@
 let playing = false;
+let isSeeking = false;
+let rangeHover = false;
+
+const spotifyGreen = '#1D8954';
 const darkGrey = '#878787';
 
 const root = document.documentElement;
@@ -6,6 +10,8 @@ const body = document.querySelector('body');
 const audio = document.querySelector('audio');
 const playButton = document.getElementById('play-pause');
 const playButtonImg = document.querySelector('#play-pause img');
+const forwardButton = document.getElementById('forward');
+const rewindButton = document.getElementById('rewind');
 const currentTime = document.getElementById('current-time');
 const totalDuration = document.getElementById('total-duration');
 const rangeArea = document.getElementById('range-container');
@@ -47,19 +53,26 @@ const pause = () => {
 };
 
 const rangeMouseOver = () => {
+    rangeHover = true;
     root.style.setProperty('--visibility', 'visible');
-    range.style.background = updateRangeColour('#1D8954', darkGrey, getSliderPosition(range));
+    range.style.background = updateRangeColour(spotifyGreen, darkGrey, getSliderPosition(range));
 };
 
 const rangeMouseExit = () => {
+    rangeHover = false;
     root.style.setProperty('--visibility', 'hidden');
     range.style.background = updateRangeColour('white', darkGrey, getSliderPosition(range));
 };
 
-const seek = () => {
-    audio.currentTime = range.value;
+const seeking = () => {
+    isSeeking = true;
     currentTime.innerHTML = formatTime(range.value);
-    range.style.background = updateRangeColour('#1D8954', darkGrey, getSliderPosition(range));
+    range.style.background = updateRangeColour(spotifyGreen, darkGrey, getSliderPosition(range));
+};
+
+const seeked = () => {
+    isSeeking = false;
+    audio.currentTime = range.value;
 };
 
 const fileUploaded = ({ target }) => {
@@ -79,21 +92,37 @@ const setTotalDuration = () => {
 };
 
 const updateTime = () => {
-    range.value = audio.currentTime;
-    updateRangeColour('white', darkGrey, audio.currentTime);
-    currentTime.innerHTML = formatTime(audio.currentTime);
+    if (!isSeeking) {
+        range.value = audio.currentTime;
+        currentTime.innerHTML = formatTime(audio.currentTime);
+    }
 
-    console.log(range.value);
+    if (!rangeHover) {
+        range.style.background = updateRangeColour('white', darkGrey, getSliderPosition(range));
+    } else {
+        range.style.background = updateRangeColour(
+            spotifyGreen,
+            darkGrey,
+            getSliderPosition(range)
+        );
+    }
 };
 
 playButton.addEventListener('click', () => {
     playing ? pause() : play();
 });
+forwardButton.addEventListener('click', () => {
+    audio.currentTime += 15;
+});
+rewindButton.addEventListener('click', () => {
+    audio.currentTime = 0;
+});
 audio.addEventListener('timeupdate', updateTime);
 audio.addEventListener('loadedmetadata', setTotalDuration);
 rangeArea.addEventListener('mouseenter', rangeMouseOver);
 rangeArea.addEventListener('mouseleave', rangeMouseExit);
-range.addEventListener('input', seek);
+range.addEventListener('input', seeking);
+range.addEventListener('change', seeked);
 fileUpload.addEventListener('input', fileUploaded);
 
 range.style.background = updateRangeColour('white', '#878787', getSliderPosition(range));
