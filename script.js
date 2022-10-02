@@ -1,7 +1,10 @@
 let playing = false;
 let isSeeking = false;
 let rangeHover = false;
+let trackNum = 0;
+let tracks;
 
+const regex = /.mp3|.wav|.aac|.flac|.m4a|.mp4|.wma/;
 const spotifyGreen = '#1D8954';
 const darkGrey = '#878787';
 
@@ -57,6 +60,40 @@ const pause = () => {
     audio.pause();
 };
 
+const forward = () => {
+    if (trackNum === tracks.length - 1) {
+        trackNum = 0;
+
+        audio.src = createURL(tracks.item(trackNum));
+        audio.load();
+        play();
+
+        trackName.innerHTML = tracks.item(trackNum).name.replace(regex, '');
+    } else {
+        trackNum++;
+
+        audio.src = createURL(tracks.item(trackNum));
+        audio.load();
+        play();
+
+        trackName.innerHTML = tracks.item(trackNum).name.replace(regex, '');
+    }
+};
+
+const rewind = () => {
+    if (audio.currentTime > 5 || trackNum === 0) {
+        audio.currentTime = 0;
+    } else {
+        trackNum--;
+
+        audio.src = createURL(tracks.item(trackNum));
+        audio.load();
+        play();
+
+        trackName.innerHTML = tracks.item(trackNum).name.replace(regex, '');
+    }
+};
+
 const rangeMouseOver = () => {
     rangeHover = true;
     root.style.setProperty('--visibility', 'visible'); // hide slider thumb
@@ -83,9 +120,7 @@ const seeked = () => {
 };
 
 const fileUploaded = ({ target }) => {
-    let trackNum = 0;
-    const tracks = target.files;
-    const regex = /.mp3|.wav|.aac|.flac|.m4a|.mp4|.wma/;
+    tracks = target.files;
 
     audio.src = createURL(tracks.item(trackNum)); // temp URL
     audio.load();
@@ -94,7 +129,34 @@ const fileUploaded = ({ target }) => {
     trackName.innerHTML = tracks.item(trackNum).name.replace(regex, '');
     nowPlaying.innerHTML = 'Now playing';
 
-    forwardButton.addEventListener('click', () => {
+    forwardButton.addEventListener('click', forward);
+    rewindButton.addEventListener('click', rewind);
+};
+
+const setTotalDuration = () => {
+    range.max = audio.duration;
+    totalDuration.innerHTML = formatTime(audio.duration);
+};
+
+const updateProgress = () => {
+    // only update time if user is not seeking
+    if (!isSeeking) {
+        range.value = audio.currentTime;
+        currentTime.innerHTML = formatTime(audio.currentTime);
+    }
+
+    if (!rangeHover) {
+        range.style.background = updateRangeColour('white', darkGrey, getSliderPosition(range));
+    } else {
+        range.style.background = updateRangeColour(
+            spotifyGreen,
+            darkGrey,
+            getSliderPosition(range)
+        );
+    }
+
+    // switch to next track when current track is over
+    if (audio.currentTime === audio.duration) {
         if (trackNum === tracks.length - 1) {
             trackNum = 0;
 
@@ -112,43 +174,6 @@ const fileUploaded = ({ target }) => {
 
             trackName.innerHTML = tracks.item(trackNum).name.replace(regex, '');
         }
-    });
-
-    rewindButton.addEventListener('click', () => {
-        if (audio.currentTime > 5 || trackNum === 0) {
-            audio.currentTime = 0;
-        } else {
-            trackNum--;
-
-            audio.src = createURL(tracks.item(trackNum));
-            audio.load();
-            play();
-
-            trackName.innerHTML = tracks.item(trackNum).name.replace(regex, '');
-        }
-    });
-};
-
-const setTotalDuration = () => {
-    range.max = audio.duration;
-    totalDuration.innerHTML = formatTime(audio.duration);
-};
-
-const updateTime = () => {
-    // only update time if user is not seeking
-    if (!isSeeking) {
-        range.value = audio.currentTime;
-        currentTime.innerHTML = formatTime(audio.currentTime);
-    }
-
-    if (!rangeHover) {
-        range.style.background = updateRangeColour('white', darkGrey, getSliderPosition(range));
-    } else {
-        range.style.background = updateRangeColour(
-            spotifyGreen,
-            darkGrey,
-            getSliderPosition(range)
-        );
     }
 };
 
@@ -156,7 +181,7 @@ const updateTime = () => {
 playButton.addEventListener('click', () => {
     playing ? pause() : play();
 });
-audio.addEventListener('timeupdate', updateTime);
+audio.addEventListener('timeupdate', updateProgress);
 audio.addEventListener('loadedmetadata', setTotalDuration);
 rangeArea.addEventListener('mouseenter', rangeMouseOver);
 rangeArea.addEventListener('mouseleave', rangeMouseExit);
