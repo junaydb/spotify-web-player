@@ -40,6 +40,10 @@ const updateRangeColour = (colour1, colour2, position) => {
     return `linear-gradient(to right, ${colour1} 0%, ${colour1} ${position}%, ${colour2} ${position}%, ${colour2} 100%)`;
 };
 
+const createURL = (obj) => {
+    return URL.createObjectURL(obj);
+};
+
 const play = () => {
     playing = true;
     playButtonImg.src = 'png/pause-button.png';
@@ -76,14 +80,44 @@ const seeked = () => {
 };
 
 const fileUploaded = ({ target }) => {
+    let trackNum = 0;
+    const tracks = target.files;
     const regex = /.mp3|.wav|.aac|.flac|.m4a|.mp4|.wma/;
 
-    const audioFile = target.files.item(0);
-    audio.src = URL.createObjectURL(audioFile); // temp URL
+    audio.src = createURL(tracks.item(trackNum)); // temp URL
     audio.load();
+    play();
 
-    trackName.innerHTML = audioFile.name.replace(regex, '');
+    trackName.innerHTML = tracks.item(trackNum).name.replace(regex, '');
     nowPlaying.innerHTML = 'Now playing';
+
+    forwardButton.addEventListener('click', () => {
+        if (trackNum === tracks.length - 1) {
+            audio.currentTime = audio.max;
+        } else {
+            trackNum++;
+
+            audio.src = createURL(tracks.item(trackNum));
+            audio.load();
+            play();
+
+            trackName.innerHTML = tracks.item(trackNum).name.replace(regex, '');
+        }
+    });
+
+    rewindButton.addEventListener('click', () => {
+        if (audio.currentTime > 5 || trackNum === 0) {
+            audio.currentTime = 0;
+        } else {
+            trackNum--;
+
+            audio.src = createURL(tracks.item(trackNum));
+            audio.load();
+            play();
+
+            trackName.innerHTML = tracks.item(trackNum).name.replace(regex, '');
+        }
+    });
 };
 
 const setTotalDuration = () => {
@@ -111,12 +145,6 @@ const updateTime = () => {
 playButton.addEventListener('click', () => {
     playing ? pause() : play();
 });
-forwardButton.addEventListener('click', () => {
-    audio.currentTime += 15;
-});
-rewindButton.addEventListener('click', () => {
-    audio.currentTime = 0;
-});
 audio.addEventListener('timeupdate', updateTime);
 audio.addEventListener('loadedmetadata', setTotalDuration);
 rangeArea.addEventListener('mouseenter', rangeMouseOver);
@@ -125,4 +153,4 @@ range.addEventListener('input', seeking);
 range.addEventListener('change', seeked);
 fileUpload.addEventListener('input', fileUploaded);
 
-range.style.background = updateRangeColour('white', '#878787', getSliderPosition(range));
+range.style.background = updateRangeColour('white', darkGrey, getSliderPosition(range));

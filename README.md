@@ -4,4 +4,4 @@
 
 ***
 
-This mini-project was created to learn more about using vanillaJS scripting with HTML.
+A mini-project to learn more about using vanillaJS scripting with HTML.
