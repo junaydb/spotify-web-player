@@ -141,7 +141,6 @@ const updateTime = () => {
         currentTime.innerHTML = formatTime(audio.currentTime);
     }
 
-    // only update range progress if user is not interacting with range
     if (!rangeHover) {
         range.style.background = updateRangeColour('white', darkGrey, getSliderPosition(range));
     } else {
