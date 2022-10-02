@@ -40,6 +40,7 @@ const updateRangeColour = (colour1, colour2, position) => {
     return `linear-gradient(to right, ${colour1} 0%, ${colour1} ${position}%, ${colour2} ${position}%, ${colour2} 100%)`;
 };
 
+// create URL reference to audio file
 const createURL = (obj) => {
     return URL.createObjectURL(obj);
 };
@@ -58,22 +59,24 @@ const pause = () => {
 
 const rangeMouseOver = () => {
     rangeHover = true;
-    root.style.setProperty('--visibility', 'visible');
+    root.style.setProperty('--visibility', 'visible'); // hide slider thumb
     range.style.background = updateRangeColour(spotifyGreen, darkGrey, getSliderPosition(range));
 };
 
 const rangeMouseExit = () => {
     rangeHover = false;
-    root.style.setProperty('--visibility', 'hidden');
+    root.style.setProperty('--visibility', 'hidden'); // show slider thumb
     range.style.background = updateRangeColour('white', darkGrey, getSliderPosition(range));
 };
 
+// update time in ui and range colour whilst user is seeking (but not audio)
 const seeking = () => {
     isSeeking = true;
     currentTime.innerHTML = formatTime(range.value);
     range.style.background = updateRangeColour(spotifyGreen, darkGrey, getSliderPosition(range));
 };
 
+// only update audio position once user has finished seeking
 const seeked = () => {
     isSeeking = false;
     audio.currentTime = range.value;
@@ -132,11 +135,13 @@ const setTotalDuration = () => {
 };
 
 const updateTime = () => {
+    // only update time if user is not seeking
     if (!isSeeking) {
         range.value = audio.currentTime;
         currentTime.innerHTML = formatTime(audio.currentTime);
     }
 
+    // only update range progress if user is not interacting with range
     if (!rangeHover) {
         range.style.background = updateRangeColour('white', darkGrey, getSliderPosition(range));
     } else {
@@ -148,6 +153,7 @@ const updateTime = () => {
     }
 };
 
+// event listeners
 playButton.addEventListener('click', () => {
     playing ? pause() : play();
 });
