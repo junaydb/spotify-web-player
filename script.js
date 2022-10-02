@@ -93,7 +93,13 @@ const fileUploaded = ({ target }) => {
 
     forwardButton.addEventListener('click', () => {
         if (trackNum === tracks.length - 1) {
-            audio.currentTime = audio.max;
+            trackNum = 0;
+
+            audio.src = createURL(tracks.item(trackNum));
+            audio.load();
+            play();
+
+            trackName.innerHTML = tracks.item(trackNum).name.replace(regex, '');
         } else {
             trackNum++;
 
