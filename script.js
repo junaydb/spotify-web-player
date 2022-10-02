@@ -96,13 +96,13 @@ const rewind = () => {
 
 const rangeMouseOver = () => {
     rangeHover = true;
-    root.style.setProperty('--visibility', 'visible'); // hide slider thumb
+    root.style.setProperty('--visibility', 'visible'); // show slider thumb
     range.style.background = updateRangeColour(spotifyGreen, darkGrey, getSliderPosition(range));
 };
 
 const rangeMouseExit = () => {
     rangeHover = false;
-    root.style.setProperty('--visibility', 'hidden'); // show slider thumb
+    root.style.setProperty('--visibility', 'hidden'); // hide slider thumb
     range.style.background = updateRangeColour('white', darkGrey, getSliderPosition(range));
 };
 
